@@ -35,7 +35,24 @@
   </script>
 
   <script type="text/x-handlebars" id="posts">
-    Posts and stuff.
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span3">
+          <table class="table">
+            <thead>
+              <tr><th>Recent Posts</th></tr>
+            </thead>
+            {{#each model}}
+            <tr><td>
+              <a href="#">{{title}} <small class="muted">by {{author}}</small></a>
+            </td></tr>
+            {{/each}}
+          </table>
+        </div>
+        <div class="span9">
+        </div>
+      </div>
+    </div>
   </script>
 
   <script src="js/libs/jquery-1.9.1.js"></script>
