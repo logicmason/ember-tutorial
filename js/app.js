@@ -18,6 +18,17 @@ App.PostsRoute = Ember.Route.extend({
 	}
 });
 
+App.PostController = Ember.ObjectController.extend({
+	isEditing: false,
+
+	doneEditing: function() {
+		this.set('isEditing', false);
+	},
+	edit: function() {
+		this.set('isEditing', true);
+	}
+});
+
 App.Post = DS.Model.extend({
 	title: DS.attr('string'),
 	author: DS.attr('string'),
@@ -32,14 +43,14 @@ App.Post.FIXTURES = [{
 	author: "cheeseen",
 	publishedAt: new Date('3-26-2013'),
 	intro: "Sheeeeiiiit!",
-	extended: "You just sit down and keep typing stuff until it works!  Use hacks!"
+	extended: "You just sit down and keep typing stuff until it works.  Use hacks!  [Sheeeeiiiit](http://www.youtube.com/watch?v=6ktvE2vfxSQ)"
 }, {
 	id: 2,
 	title: "All N of my queens",
 	author: "ruanp",
 	publishedAt: new Date('4-03-2013'),
 	intro: "What would you say if I said I could cut the search space and make it run 17 million times faster?",
-	extended: "Would you be impressed?  And... what if I told you I could improve the speed by a factor of 1.4 quintillion?  Would you find that impressive?"
+	extended: "Would you be impressed?  And... what if I told you I could improve the speed by a factor of 1.4 *quintillion*?  Would you find that impressive?"
 }];
 
 
@@ -51,4 +62,9 @@ App.IndexRoute = Ember.Route.extend({
 
 Ember.Handlebars.registerBoundHelper('date', function(date) {
 	return moment(date).fromNow();
+});
+
+var showdown = new Showdown.converter();
+Ember.Handlebars.registerBoundHelper('markdown', function(input) {
+	return new Ember.Handlebars.SafeString(showdown.makeHtml(input));
 });
