@@ -7,7 +7,9 @@ App.Store = DS.Store.extend({
 
 App.Router.map(function() {
 	this.resource('about');
-	this.resource('posts');
+	this.resource('posts', function() {
+		this.resource('post', { path: ':post_id'});
+	});
 });
 
 App.PostsRoute = Ember.Route.extend({
@@ -45,4 +47,8 @@ App.IndexRoute = Ember.Route.extend({
   model: function() {
     return ['red', 'yellow', 'blue'];
   }
+});
+
+Ember.Handlebars.registerBoundHelper('date', function(date) {
+	return moment(date).fromNow();
 });
