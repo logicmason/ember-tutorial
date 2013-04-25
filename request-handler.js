@@ -35,8 +35,39 @@ var handleRequest = function(request, response) {
 				response.end();
 			}
 			break;
-	}
-	return response;
+
+		default:
+			response.writeHead(200, headers);
+			var uri = url.parse(request.url).pathname;
+			var filename = path.join(process.cwd(), '', unescape(uri));
+			var stats;
+
+			try {
+				stats = fs.lstatSync(filename); //throws if no file
+			} catch (e) {
+				response.writeHead(404, {'Content-Type': 'text/plain'});
+				response.end('404 these are not the files ur looking for.');
+				return;
+			}
+
+			if (stats.isFile()) {
+				var mimeType = "text/html";
+				headers['Content-Type'] = mimeType;
+				response.writeHead(200, headers);
+
+				var fileStream = fs.ReadStream(filename);
+				fileStream.pipe(response);
+			} else if (stats.isDirectory()) {
+				headers['Content-Type'] = "text";
+				response.writeHead(200, headers);
+				response.end(uri + ' is a directory.');
+			} else {
+				console.log('weird... not a file or a directory or a 404...');
+				response.end();
+			}
+
+		}
+		return response;
 };
 
 exports.handleRequest = handleRequest;
