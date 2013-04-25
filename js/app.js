@@ -12,6 +12,12 @@ App.Router.map(function() {
 	});
 });
 
+App.IndexRoute = Ember.Route.extend({
+  redirect: function() {
+	this.transitionTo('posts');
+  }
+});
+
 App.PostsRoute = Ember.Route.extend({
 	model: function() {
 		return App.Post.find();
@@ -53,12 +59,6 @@ App.Post.FIXTURES = [{
 	extended: "Would you be impressed?  And... what if I told you I could improve the speed by a factor of 1.4 *quintillion*?  Would you find that impressive?"
 }];
 
-
-App.IndexRoute = Ember.Route.extend({
-  model: function() {
-    return ['red', 'yellow', 'blue'];
-  }
-});
 
 Ember.Handlebars.registerBoundHelper('date', function(date) {
 	return moment(date).fromNow();
